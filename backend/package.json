@@ -1,0 +1,23 @@
+{
+  "name": "s76_nandhini_capstone_city-explorer",
+  "version": "1.0.0",
+  "description": "City Explorer is a full-stack web application that allows users to explore cities, discover places (temples, colleges, malls, parks, etc.), learn about hidden gems, and generate personalized travel itineraries using OpenAI. Users can also contribute lesser-known locations, view 360° photos, and access multilingual content — all in one place.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.1",
+    "node.js": "^0.0.1-security"
+  }
+}
