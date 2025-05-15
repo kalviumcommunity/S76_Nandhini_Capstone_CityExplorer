@@ -5,11 +5,11 @@ const { protect } = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
 // Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-};
+// const generateToken = (id) => {
+//   return jwt.sign({ id }, process.env.JWT_SECRET, {
+//     expiresIn: '30d',
+//   });
+// };
 
 // @desc    Register a new user
 // @route   POST /api/users/register
