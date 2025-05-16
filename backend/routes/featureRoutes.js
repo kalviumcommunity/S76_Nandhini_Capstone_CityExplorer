@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Feature = require('../models/Feature');
 
+
 // @desc    Get all features
 // @route   GET /api/features
 // @access  Public
