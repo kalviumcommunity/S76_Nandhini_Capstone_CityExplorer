@@ -5,6 +5,7 @@ const Feature = require('../models/Feature');
 // @desc    Get all features
 // @route   GET /api/features
 // @access  Public
+
 router.get('/', async (req, res) => {
   try {
     const features = await Feature.find({});
@@ -14,5 +15,4 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
 module.exports = router;
