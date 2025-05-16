@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const jwt = require('jsonwebtoken');
-// const { protect } = require('../middleware/authMiddleware');
+
 const User = require('../models/User');
 
 
@@ -25,8 +24,8 @@ router.post('/register', async (req, res) => {
     if (user) {
       res.status(201).json({
         _id: user._id,
-        username: user.username,
-        token: generateToken(user._id),
+        username: user.username
+    
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
