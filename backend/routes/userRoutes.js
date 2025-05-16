@@ -1,15 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const { protect } = require('../middleware/authMiddleware');
+// const jwt = require('jsonwebtoken');
+// const { protect } = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
-// Generate JWT
-// const generateToken = (id) => {
-//   return jwt.sign({ id }, process.env.JWT_SECRET, {
-//     expiresIn: '30d',
-//   });
-// };
+
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -67,9 +62,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
 
 
 module.exports = router;
