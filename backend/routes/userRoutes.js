@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware');
 const User = require('../models/User');
+const mongoose = require('mongoose');
 
 // Generate JWT
 const generateToken = (id) => {
@@ -10,20 +11,16 @@ const generateToken = (id) => {
     expiresIn: '30d',
   });
 };
-
 // @desc    Register a new user
 // @route   POST /api/users/register
-// @access  Public
 router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
-    // Check if user exists
+     // Check if user exists
     const userExists = await User.findOne({ username });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
-    
     // Create user
     const user = await User.create({ username, password });
     
@@ -72,8 +69,13 @@ router.post('/login', async (req, res) => {
 // @access  Private
 router.get('/profile', protect, async (req, res) => {
   try {
+    // Validate MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
     const user = await User.findById(req.user._id);
-    
+
     if (user) {
       res.json({
         _id: user._id,

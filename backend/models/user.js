@@ -1,34 +1,41 @@
-const mongoose = require("mongoose");
-// const jwt = require("jsonwebtoken");
-// const Joi = require("joi");
-// const passwordComplexity = require("joi-password-complexity");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-	firstName: { type: String, required: true },
-	lastName: { type: String, required: true },
-	email: { type: String, required: true },
-	password: { type: String, required: true },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-// userSchema.methods.generateAuthToken = function () {
-// 	const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
-// 		expiresIn: "7d",
-// 	});
-// 	return token;
-// };
+// Hash password before saving
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
-const User = mongoose.model("user", userSchema);
+// Method to compare passwords
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
-
-// const validate = (data) => {
-// 	const schema = Joi.object({
-// 		firstName: Joi.string().required().label("First Name"),
-// 		lastName: Joi.string().required().label("Last Name"),
-// 		email: Joi.string().email().required().label("Email"),
-// 		password: passwordComplexity().required().label("Password"),
-// 	});
-// 	return schema.validate(data);
-// };
-
-// module.exports = { User, validate };  
-
+module.exports = mongoose.model('User', userSchema);
