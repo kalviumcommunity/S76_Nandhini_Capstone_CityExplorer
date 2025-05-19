@@ -1,142 +1,120 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
 const City = require('./models/City');
 const Feature = require('./models/Feature');
 const User = require('./models/User');
+const bcrypt = require('bcrypt');
 
-// Load env vars
+// Load env variables
 dotenv.config();
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected for seeding'))
-  .catch(err => {
-    console.error(`Error connecting to MongoDB: ${err.message}`);
-    process.exit(1);
-  });
+// Connect to database
+connectDB();
 
-// Seed data
-const seedDatabase = async () => {
+const seedData = async () => {
   try {
-    // Clear existing data
-    await City.deleteMany();
-    await Feature.deleteMany();
-    console.log('Data cleared...');
-
-    // Add demo user (but don't clear users to maintain existing accounts)
-    const existingUsers = await User.countDocuments();
-    if (existingUsers === 0) {
+    console.log('🌱 Seeding database...');
+    
+    // Check if features exist
+    const featuresCount = await Feature.countDocuments();
+    
+    if (featuresCount === 0) {
+      console.log('Seeding features...');
+      
+      const features = [
+        {
+          title: 'Interactive Maps',
+          description: 'Explore cities with our detailed interactive maps, highlighting points of interest and hidden gems.',
+          icon: 'map-marked-alt',
+          colorClass: 'primary'
+        },
+        {
+          title: 'Personalized Itineraries',
+          description: 'Create custom itineraries based on your interests, time, and preferred pace of exploration.',
+          icon: 'route',
+          colorClass: 'secondary'
+        },
+        {
+          title: 'Local Recommendations',
+          description: 'Discover where locals eat, shop, and hang out with recommendations from city residents.',
+          icon: 'utensils',
+          colorClass: 'accent'
+        }
+      ];
+      
+      await Feature.insertMany(features);
+      console.log('✅ Features seeded successfully');
+    } else {
+      console.log('Features already exist, skipping seed');
+    }
+    
+    // Check if cities exist
+    const citiesCount = await City.countDocuments();
+    
+    if (citiesCount === 0) {
+      console.log('Seeding cities...');
+      
+      const cities = [
+        {
+          name: 'New York',
+          country: 'United States',
+          description: 'The city that never sleeps. Explore iconic landmarks, diverse neighborhoods, and world-class dining.',
+          imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+          rating: 4.8,
+          reviewCount: 12543,
+          placeCount: 328
+        },
+        {
+          name: 'Paris',
+          country: 'France',
+          description: 'The City of Light. Discover romantic streets, historical monuments, and incredible cuisine.',
+          imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1173&q=80',
+          rating: 4.7,
+          reviewCount: 10221,
+          placeCount: 295
+        },
+        {
+          name: 'Tokyo',
+          country: 'Japan',
+          description: 'A fascinating blend of traditional and ultramodern. Experience cutting-edge technology, historic temples, and vibrant street life.',
+          imageUrl: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1536&q=80',
+          rating: 4.9,
+          reviewCount: 8976,
+          placeCount: 412
+        }
+      ];
+      
+      await City.insertMany(cities);
+      console.log('✅ Cities seeded successfully');
+    } else {
+      console.log('Cities already exist, skipping seed');
+    }
+    
+    // Check if demo user exists
+    const demoUser = await User.findOne({ username: 'demo' });
+    
+    if (!demoUser) {
+      console.log('Creating demo user...');
+      
+      const hashedPassword = await bcrypt.hash('password', 10);
+      
       await User.create({
         username: 'demo',
-        password: 'password123' // This will be hashed by the model's pre-save hook
+        password: hashedPassword
       });
-      console.log('Demo user created');
+      
+      console.log('✅ Demo user created successfully');
+    } else {
+      console.log('Demo user already exists, skipping creation');
     }
-
-    // Seed cities
-    const cities = [
-      {
-        name: 'New York',
-        country: 'United States',
-        imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
-        rating: 4.8,
-        reviewCount: 1248,
-        placeCount: 350
-      },
-      {
-        name: 'Paris',
-        country: 'France',
-        imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34',
-        rating: 4.9,
-        reviewCount: 1573,
-        placeCount: 420
-      },
-      {
-        name: 'Tokyo',
-        country: 'Japan',
-        imageUrl: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc',
-        rating: 4.7,
-        reviewCount: 1189,
-        placeCount: 480
-      },
-      {
-        name: 'London',
-        country: 'United Kingdom',
-        imageUrl: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad',
-        rating: 4.6,
-        reviewCount: 1352,
-        placeCount: 410
-      },
-      {
-        name: 'Rome',
-        country: 'Italy',
-        imageUrl: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5',
-        rating: 4.8,
-        reviewCount: 1142,
-        placeCount: 320
-      },
-      {
-        name: 'Sydney',
-        country: 'Australia',
-        imageUrl: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9',
-        rating: 4.7,
-        reviewCount: 987,
-        placeCount: 280
-      }
-    ];
-
-    const citiesResult = await City.insertMany(cities);
-    console.log(`${citiesResult.length} cities inserted`);
-
-    // Seed features
-    const features = [
-      {
-        title: 'Interactive Maps',
-        description: 'Explore cities with our detailed interactive maps, highlighting points of interest and hidden gems.',
-        icon: 'map',
-        colorClass: 'primary'
-      },
-      {
-        title: 'Personalized Itineraries',
-        description: 'Create custom itineraries based on your interests, time, and preferred pace of exploration.',
-        icon: 'route',
-        colorClass: 'secondary'
-      },
-      {
-        title: 'Local Recommendations',
-        description: 'Discover where locals eat, shop, and hang out with recommendations from city residents.',
-        icon: 'utensils',
-        colorClass: 'accent'
-      },
-      {
-        title: 'Travel Reviews',
-        description: 'Read honest reviews from fellow travelers to make informed decisions about destinations.',
-        icon: 'star',
-        colorClass: 'primary'
-      },
-      {
-        title: 'Virtual Tours',
-        description: 'Experience destinations through immersive virtual tours before planning your actual visit.',
-        icon: 'video',
-        colorClass: 'secondary'
-      },
-      {
-        title: 'Travel Planner',
-        description: 'Organize your trips with our comprehensive planner that covers all aspects of your journey.',
-        icon: 'calendar',
-        colorClass: 'accent'
-      }
-    ];
-
-    const featuresResult = await Feature.insertMany(features);
-    console.log(`${featuresResult.length} features inserted`);
-
-    console.log('Database seeded successfully');
-    process.exit();
+    
+    console.log('🎉 Database seeded successfully');
+    process.exit(0);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    console.error('❌ Error seeding database:', error);
     process.exit(1);
   }
 };
 
-seedDatabase();
+seedData();
