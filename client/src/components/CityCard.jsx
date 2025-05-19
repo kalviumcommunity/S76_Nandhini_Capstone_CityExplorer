@@ -35,6 +35,7 @@ const CityCard = ({ city }) => {
           <button className="w-full btn btn-outline group-hover:bg-primary group-hover:text-white group-hover:border-primary">
             Explore City
           </button>
+          
         </div>
       </div>
     </Link>
