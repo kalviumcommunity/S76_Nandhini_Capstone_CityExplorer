@@ -13,4 +13,4 @@ If you are developing a production application, we recommend using TypeScript wi
 
 
 ## Frontend deploy :
-Netlify :https://sweet-lokum-752d10.netlify.app/login
+Netlify : https://sweet-lokum-752d10.netlify.app/ 
