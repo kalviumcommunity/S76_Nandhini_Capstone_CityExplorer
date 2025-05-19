@@ -7,19 +7,26 @@ const path = require('path');
 // Load env vars
 dotenv.config();
 
+const cookieParser = require('cookie-parser');
+
+
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
 const cityRoutes = require('./routes/cityRoutes');
 const featureRoutes = require('./routes/featureRoutes');
-
-// Create Express app
 const app = express();
 
+// Create Express app
+
 // Middleware
-app.use(cors());
+// app.use(express.urlencoded({ extended: false }));
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -41,17 +48,17 @@ app.use('/api/cities', cityRoutes);
 app.use('/api/features', featureRoutes);
 
 // Serve frontend in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../client/dist')));
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
-  });
-} else {
-  app.get('/', (req, res) => {
-    res.send('Welcome to the Capstone Backend!');
-  });
-}
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+//   });
+// } else {
+//   app.get('/', (req, res) => {
+//     res.send('Welcome to the Capstone Backend!');
+//   });
+// }
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -62,10 +69,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// GET request for checking server status
-app.get('/', (req, res) => {
-  res.send('Welcome to the Capstone Backend!');
-});
+
 
 // Start server
 const port = process.env.PORT || 8080;
