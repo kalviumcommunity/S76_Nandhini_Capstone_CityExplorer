@@ -44,7 +44,6 @@ const CityDetailPage = () => {
       </div>
     );
   }
-
   return (
     <div>
       <div 
