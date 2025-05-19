@@ -15,9 +15,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @desc    Get city by ID
-// @route   GET /api/cities/:id
-// @access  Public
 router.get('/:id', async (req, res) => {
   try {
     const city = await City.findById(req.params.id);
