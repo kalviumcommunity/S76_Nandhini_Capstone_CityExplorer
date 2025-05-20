@@ -3,7 +3,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { User, userValidationSchema } = require('../models/User');
+const { User, userValidationSchema } = require('../models/user');
 const { protect } = require('../middleware/authMiddleware');
 const mongoose = require('mongoose');
 
