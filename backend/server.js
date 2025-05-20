@@ -46,7 +46,9 @@ connectDB();
 app.use('/api/users', userRoutes);
 app.use('/api/cities', cityRoutes);
 app.use('/api/features', featureRoutes);
-
+app.get('/', (req, res) => {
+    res.send('Welcome to the Capstone Backend!');
+  });
 // Serve frontend in production
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, '../client/dist')));
@@ -55,9 +57,7 @@ app.use('/api/features', featureRoutes);
 //     res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 //   });
 // } else {
-//   app.get('/', (req, res) => {
-//     res.send('Welcome to the Capstone Backend!');
-//   });
+
 // }
 
 // Error handler
@@ -69,7 +69,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-
+  
 
 // Start server
 const port = process.env.PORT || 8080;
