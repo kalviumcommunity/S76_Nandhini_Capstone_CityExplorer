@@ -8,7 +8,6 @@ const CitiesPage = () => {
   const [filteredCities, setFilteredCities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-
   useEffect(() => {
     const fetchCities = async () => {
       try {

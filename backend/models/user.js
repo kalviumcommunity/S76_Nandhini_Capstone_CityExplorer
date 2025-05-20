@@ -23,9 +23,6 @@ const userValidationSchema = Joi.object({
   username: Joi.string().min(3).max(30).required(),
   password: Joi.string().min(6).max(100).required(),
 });
-
 const User = mongoose.model('User', userSchema);
 module.exports = { User, userValidationSchema };
-
-
 
