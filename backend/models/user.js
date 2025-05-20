@@ -26,4 +26,3 @@ const userValidationSchema = Joi.object({
 const User = mongoose.model('User', userSchema);
 module.exports = { User, userValidationSchema };
 
-
