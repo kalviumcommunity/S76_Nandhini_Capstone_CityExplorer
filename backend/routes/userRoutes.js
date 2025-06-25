@@ -1,4 +1,5 @@
 
+
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -132,5 +133,4 @@ router.get('/profile', protect, async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
 module.exports = router;

@@ -56,7 +56,6 @@ const LoginPage = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="bg-gray-light min-h-screen py-16">
       <div className="container mx-auto px-4">
