@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const City = require('./models/City');
 const Feature = require('./models/Feature');
-const User = require('./models/User');
+const { User } = require('./models/user');
 const bcrypt = require('bcrypt');
 
 // Load env variables
