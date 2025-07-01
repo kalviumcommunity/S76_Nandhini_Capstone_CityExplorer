@@ -89,7 +89,9 @@ router.get('/profile', protect, async (req, res) => {
 // Profile PUT (Update)
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { username, currentPassword, newPassword } = req.body;
+if (!username && !newPassword) {
+  return res.status(400).json({ message: 'Please provide a username or a new password to update.' });
+}
 
     if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
       return res.status(400).json({ message: 'Invalid user ID' });
