@@ -5,6 +5,8 @@ const { User, userValidationSchema } = require('../models/user');
 const { protect } = require('../middleware/authMiddleware');
 const mongoose = require('mongoose');
 const router = express.Router();
+const Joi = require('joi');
+
 
 // New schema for just validating username
 const usernameSchema = Joi.object({

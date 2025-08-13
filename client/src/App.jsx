@@ -25,9 +25,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <ProfilePage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             } />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
