@@ -2,7 +2,10 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://s76-nandhini-capstone-cityexplorer-4.onrender.com/api'
+      : '/api',
   headers: {
     'Content-Type': 'application/json',
   },
