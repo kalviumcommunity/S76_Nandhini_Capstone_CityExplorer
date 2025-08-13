@@ -5,6 +5,8 @@ const { User, userValidationSchema } = require('../models/user');
 const { protect } = require('../middleware/authMiddleware');
 const mongoose = require('mongoose');
 const router = express.Router();
+const Joi = require('joi');
+
 
 // New schema for just validating username
 const usernameSchema = Joi.object({
@@ -89,7 +91,9 @@ router.get('/profile', protect, async (req, res) => {
 // Profile PUT (Update)
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { username, currentPassword, newPassword } = req.body;
+if (!username && !newPassword) {
+  return res.status(400).json({ message: 'Please provide a username or a new password to update.' });
+}
 
     if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
       return res.status(400).json({ message: 'Invalid user ID' });

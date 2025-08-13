@@ -51,9 +51,9 @@ router.put('/:id', async (req, res) => {
     const updateData = req.body;
 
     // Validate feature ID
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({ message: 'Invalid feature ID format' });
-    }
+if (!mongoose.Types.ObjectId.isValid(id)) {
+  return res.status(400).json({ message: 'Invalid feature ID' });
+}
 
     // Validate update data
     const { error } = featureUpdateSchema.validate(updateData);
